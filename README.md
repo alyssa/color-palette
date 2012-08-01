@@ -7,4 +7,4 @@ output: table of color and frequency
 
 === Running script:
 
-ruby color.rb <url>
+ruby color.rb 'url'
