@@ -121,5 +121,4 @@ end
 
 cp = ColorPalette.new("#{param_url}")
 puts "Palette for " + param_url
-#cp.print_color_palette
 cp.print_palette_with_freq
