@@ -12,6 +12,7 @@ ruby color.rb 'url'
 === Notes:
 
 
-* The color palette considers hex, rgb, rgba and english word colors (ex. red, green, blue). All colors are translated to hex just for consistency. This script ignores opacity. 
-
-Lastly, this script sees #fff and #ffffff as two different colors. Translating #fff to #ffffff is a no brainer, but thing's get trickier when you have something like #ff0 that translates to #ffff00. If you have any insight on how to translate this correctly, feel free to start your own branch and contribute.
+* The color palette considers hex, rgb, rgba and english word colors (ex. red, green, blue). 
+* All colors are translated to hex just for consistency. 
+* This script ignores opacity. 
+* script sees #fff and #ffffff as two different colors. (Translating #fff to #ffffff is a no brainer, but thing's get trickier when you have something like #ff0 that translates to #ffff00. If you have any insight on how to translate this correctly, feel free to start your own branch and contribute.)
