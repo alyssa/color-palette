@@ -20,7 +20,6 @@ class ColorPalette
 
     def get_stylesheet_urls(url)
         urls = Array.new
-
         begin
             page = Nokogiri::HTML(open(url))      
         rescue
@@ -40,14 +39,15 @@ class ColorPalette
 
     def build_color_palette(urls)
         urls.each{ |css_url|
+        #    puts css_url
             page_source = Nokogiri::HTML(open(css_url)).text 
             # |color| will be an array of 5 elements (5 regex groups)
             # group 1: hex
             # group 2,3,4: rgb respectively notes: handles rgba but ignores opacity
             # group 5: a color (as an English word -- ex. white)
-            color_array = page_source.scan(/color\s*:\s*(#[0-9A-Fa-f]{3,6}+)\s*;|rgba?\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*|color\s*:\s*(white|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple)/)
+            color_array = page_source.scan(/color\s*:\s*(#[0-9A-Fa-f]{3,6}+)\s*|rgba?\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*|color\s*:\s*(white|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple)/)
             color_array.each{|color|
-                #         puts color.inspect
+        #        puts color.inspect
                 if color[0] != nil
                     color = color[0].downcase
                 elsif color[1] != nil
@@ -57,7 +57,7 @@ class ColorPalette
                     hex_color = get_hex(color)
                     color = hex_color if hex_color != nil # try to assign a hex value, if not, will remain as is (ex. white, blue, etc.)
                 end
-                #        puts color
+    #            puts color
                 if @color_map[color] == nil
                     @color_map[color] = 1   
                 else
@@ -72,6 +72,7 @@ class ColorPalette
         hex = case color
         when "white"    then "#ffffff"        
         when "black"    then "#000000"
+        when "blue"     then "#0000ff"
         when "fuchsia"  then "#ff00ff"
         when "gray"     then "#808080"
         when "green"    then "#008000"
@@ -99,15 +100,15 @@ class ColorPalette
     end
 
     def print_palette_with_freq
+        puts "num colors: " + @color_map.size.to_s
         printf("--------|-----------\n")
-        printf("%.8s\t| %s\n", "Color", "Frequency")
+        printf("%.8s\t|%s\n", "Color", "Frequency")
         printf("--------|-----------\n")
         @color_map.each{|key, value|
-            printf("%.8s\t| %d\n", key, value)
+            printf("%.8s\t|%d\n", key, value)
         }
 
     end
-
 end
 
 if ARGV.length == 0
