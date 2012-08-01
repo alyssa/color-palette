@@ -19,10 +19,13 @@ class ColorPalette
     end
 
     def get_stylesheet_urls(url)
-        puts url
         urls = Array.new
-        
-        page = Nokogiri::HTML(open(url))      
+
+        begin
+            page = Nokogiri::HTML(open(url))      
+        rescue
+            abort("Not a valid link. Try another one.")
+        end
         urls << url # will check homepage just in case there is embedded css
         page.css('head').css('link[rel=stylesheet]').each {|stylesheet|
             if !stylesheet['href'].start_with? '/' 
@@ -44,7 +47,7 @@ class ColorPalette
             # group 5: a color (as an English word -- ex. white)
             color_array = page_source.scan(/color\s*:\s*(#[0-9A-Fa-f]{3,6}+)\s*;|rgba?\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*|color\s*:\s*(white|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple)/)
             color_array.each{|color|
-       #         puts color.inspect
+                #         puts color.inspect
                 if color[0] != nil
                     color = color[0].downcase
                 elsif color[1] != nil
@@ -54,7 +57,7 @@ class ColorPalette
                     hex_color = get_hex(color)
                     color = hex_color if hex_color != nil # try to assign a hex value, if not, will remain as is (ex. white, blue, etc.)
                 end
-        #        puts color
+                #        puts color
                 if @color_map[color] == nil
                     @color_map[color] = 1   
                 else
@@ -67,19 +70,19 @@ class ColorPalette
     # helper method for build_color_palette
     def get_hex(color) 
         hex = case color
-            when "white"    then "#ffffff"        
-            when "black"    then "#000000"
-            when "fuchsia"  then "#ff00ff"
-            when "gray"     then "#808080"
-            when "green"    then "#008000"
-            when "lime"     then "#00ff00"
-            when "maroon"   then "#800000"
-            when "olive"    then "#808000"
-            when "orange"   then "#ffA500"
-            when "purple"   then "#800080"
+        when "white"    then "#ffffff"        
+        when "black"    then "#000000"
+        when "fuchsia"  then "#ff00ff"
+        when "gray"     then "#808080"
+        when "green"    then "#008000"
+        when "lime"     then "#00ff00"
+        when "maroon"   then "#800000"
+        when "olive"    then "#808000"
+        when "orange"   then "#ffA500"
+        when "purple"   then "#800080"
         end  
     end
-    
+
     # will sort hash map and add those keys to an array then return array
     def sort_palette
         @color_palette = Array.new
@@ -90,26 +93,32 @@ class ColorPalette
         #    color_palette.each{|color| puts color}
         return @color_palette
     end
-    
-    def get_color_palette
-        @color_palette
+
+    def print_color_palette
+        @color_palette.each{|c| puts c}
+    end
+
+    def print_palette_with_freq
+        printf("--------|-----------\n")
+        printf("%.8s\t| %s\n", "Color", "Frequency")
+        printf("--------|-----------\n")
+        @color_map.each{|key, value|
+            printf("%.8s\t| %d\n", key, value)
+        }
+
     end
 
 end
 
-#ARGV.each do|a|
-#  puts "Argument: #{a}"
-#end
-
 if ARGV.length == 0
-    puts "must provide an argument"
+    abort("must provide a url")
 elsif ARGV.length > 1
-    puts "i only need one param, namely a url."
+    abort("Too much info, buddy. I just need one url.")
 elsif ARGV.length == 1
     param_url = ARGV[0]
 end
-puts param_url
 
 cp = ColorPalette.new("#{param_url}")
-
-cp.get_color_palette.each{|c| puts c}
+puts "Palette for " + param_url
+#cp.print_color_palette
+cp.print_palette_with_freq
