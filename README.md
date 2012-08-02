@@ -3,7 +3,7 @@ color-palette
 
 Ruby and PHP script to get the color palette of a site
 
-* The Ruby script can get any external url. For example, you could use it on amazon.com
+* The Ruby script can get any external url. For example, you could use it on github.com
 * The PHP script is for a site that you own. This enables it to be used on parts of your site that require login, for example
 
 output: table of color and frequency
