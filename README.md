@@ -18,17 +18,17 @@ Running PHP script:
 
 * Drop the color.php script into a web server
 
-    `$c = new ColorPalette();`
-    `$c->PrintColorPalette();`
+         $c = new ColorPalette();
+         $c->PrintColorPalette();
 
 * ColorPalette also takes two optional parameters:
 
-    `ColorPalette($startingDir = '.', $fileTypes = array('php', 'html', 'ctp', 'css', 'js'));`
+         ColorPalette($startingDir = '.', $fileTypes = array('php', 'html', 'ctp', 'css', 'js'));`
 
 * You can also run color.php with
 
-    `$c = new ColorPalette();`
-    `$colorArray = c->buildColorPalette(); //Now contains all of the color counts`
+         $c = new ColorPalette();
+         $colorArray = c->buildColorPalette(); //Now contains all of the color counts
 
 Notes:
 ------
