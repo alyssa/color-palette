@@ -1,10 +1,13 @@
 require 'open-uri'
 require 'nokogiri'
 
-class ColorPalette 
+class ColorPalette
+
+    @@site_name
 
     def initialize(url)
         url = check_url(url)
+        @@site_name = URI.parse(url).host
         # hashmap with store color -> # of appearances
         @color_map = Hash.new
         urls = get_stylesheet_urls(url)
@@ -112,6 +115,28 @@ class ColorPalette
         return @color_palette
     end
 
+    def print_palette_html
+        file = File.new("#{@@site_name}.html", "w+")
+        file.puts "<html>"
+        file.puts "<title>#{@@site_name} Color Page</title>"
+        file.puts "<body>"
+        file.puts "<table>"
+        file.puts "<tr>"
+        file.puts "<th> Color </th>"
+        file.puts "<th> Hex </th>"
+        file.puts "<th> Frequency </th>"
+        file.puts "</tr>"
+        @color_map.each{|key, value|
+            file.puts "<tr>"
+            file.puts "<td style='width:50px; height:50px; background-color: #{key}'></td>"
+            file.puts "<td> #{key} </td>"
+            file.puts "<td> #{value} </td>"
+            file.puts "</tr>"
+        }
+        file.puts "</body>"
+        file.puts "</html>"
+    end
+
     def print_color_palette
         @color_palette.each{|c| puts c}
     end
@@ -139,3 +164,4 @@ end
 cp = ColorPalette.new("#{param_url}")
 puts "Palette for " + param_url
 cp.print_palette_with_freq
+cp.print_palette_html
