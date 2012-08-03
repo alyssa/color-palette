@@ -15,3 +15,4 @@ output: table of color and frequency
 * The color palette considers hex, rgb, rgba and english word colors (ex. red, green, blue). 
 * All colors are translated to hex just for consistency. 
 * This script ignores opacity. 
+* generates html file so you can visually see color palette 
