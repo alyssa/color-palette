@@ -39,6 +39,12 @@ class ColorPalette
     def build_color_palette(urls)
         urls.each{ |css_url|
         #    puts css_url
+            begin
+                page_source = Nokogiri::HTML(open(css_url)).text 
+            rescue
+                puts "Did not pull any colors from badly formed url:\n"+css_url
+                next
+            end
             page_source = Nokogiri::HTML(open(css_url)).text 
             # |color| will be an array of 5 elements (5 regex groups)
             # group 1: hex
